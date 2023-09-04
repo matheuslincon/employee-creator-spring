@@ -1,65 +1,36 @@
 package io.nology.employeecreator.employer;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+public class CreateEmployerDTO {
 
-@Entity
-@Table(name = "employees")
-public class Employer {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column
+	@NotBlank
 	private String firstName;
 	
-	@Column
+	@NotBlank
 	private String lastName;
 	
-	@Column
+	@NotBlank
 	private String email;
 	
-	@Column
+	@NotNull
 	private Long number;
 	
-	@Column
+	@NotBlank
 	private String address;
 	
-	@Column
+	@NotBlank
 	private String contractType;
 	
-	@Column
+	@NotNull
 	private String startDate;
 	
-	@Column
+	
 	private String finishDate;
 	
-	@Column
+	@NotNull
 	private Boolean isFulltime;
-	
-	public Employer() {}
-	
-	public Employer(String firstName, String lastName, String email, Long number, String address, String contractType, String startDate, String finishDate, Boolean isFulltime) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.number = number;
-		this.address = address;
-		this.contractType = contractType;
-		this.startDate = startDate;
-		this.finishDate = finishDate;
-		this.isFulltime = isFulltime;
-	}
-
-	public Long getId() {
-		return id;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -132,6 +103,4 @@ public class Employer {
 	public void setIsFulltime(Boolean isFulltime) {
 		this.isFulltime = isFulltime;
 	}
-	
-	
 }
