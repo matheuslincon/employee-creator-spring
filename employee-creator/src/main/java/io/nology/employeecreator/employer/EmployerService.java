@@ -31,11 +31,14 @@ public class EmployerService {
 		return repository.findById(id);
 	}
 	
-	public void delete(Long id) {
+	public boolean delete(Long id) {
 		Optional<Employer> e = repository.findById(id);
-		e.ifPresent(employerMaybe -> {
-			repository.deleteById(id);	
-		});
 		
+		if(e.isEmpty()) {
+			return false;
+		}
+		
+		repository.deleteById(id);
+		return true;
 	}
 }

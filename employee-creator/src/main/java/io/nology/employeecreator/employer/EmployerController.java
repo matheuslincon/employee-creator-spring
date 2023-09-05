@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.nology.employeecreator.exceptions.NotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -42,4 +44,16 @@ public class EmployerController {
 		return new ResponseEntity<>(foundEmployer.get(), HttpStatus.OK);
 		
 	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Employer> deleteById(@PathVariable Long id) {
+		boolean deleted = this.service.delete(id);
+		
+		if(!deleted) {
+			throw new NotFoundException(String.format(
+					"Post with id: %s not found, could not delete.", 
+					id));
+		}
+		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+	} 
 }
