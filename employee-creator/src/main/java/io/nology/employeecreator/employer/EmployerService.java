@@ -31,6 +31,39 @@ public class EmployerService {
 		return repository.findById(id);
 	}
 	
+	public Optional<Employer> update(Long id, UpdateEmployerDTO data) {
+		
+		Optional<Employer> maybeEmployer = repository.findById(id);
+		
+//		employer.ifPresent(employerMaybe -> {
+//			employerMaybe.setFirstname(data.getFirstname());
+//			employerMaybe.setLastname(data.getLastname());
+//			employerMaybe.setEmail(data.getEmail());
+//			employerMaybe.setNumber(data.getNumber());
+//			employerMaybe.setAddress(data.getAddress());
+//			employerMaybe.setIspermanent(data.getIspermanent());
+//			employerMaybe.setStartdate(data.getStartdate());
+//			employerMaybe.setFinishdate(data.getFinishdate());
+//		});
+		
+		if(maybeEmployer.isPresent()) {
+			Employer existingEmployer = maybeEmployer.get();
+			
+			existingEmployer.setFirstName(data.getFirstName());
+			existingEmployer.setLastName(data.getLastName());
+			existingEmployer.setEmail(data.getEmail());
+			existingEmployer.setNumber(data.getNumber());
+			existingEmployer.setAddress(data.getAddress());
+			existingEmployer.setContractType(data.getContractType());
+			existingEmployer.setStartDate(data.getStartDate());
+			existingEmployer.setFinishDate(data.getFinishDate());
+			existingEmployer.setIsFulltime(data.getIsFulltime());
+			
+			return Optional.of(repository.save(existingEmployer));
+		}
+		return maybeEmployer;
+	}
+	
 	public boolean delete(Long id) {
 		Optional<Employer> e = repository.findById(id);
 		

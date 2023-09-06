@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,8 +42,25 @@ public class EmployerController {
 	public ResponseEntity<Employer> getById(@PathVariable Long id) {
 		Optional<Employer> foundEmployer = this.service.findById(id);
 		
+		if(foundEmployer.isEmpty()) {
+			throw new NotFoundException(String.format("Employee with id: %s not found", id));
+		}
+		
 		return new ResponseEntity<>(foundEmployer.get(), HttpStatus.OK);
 		
+	}
+	
+	@PatchMapping("/{id}")
+	public ResponseEntity<Employer> updateById(@PathVariable Long id,
+			@Valid @RequestBody UpdateEmployerDTO data) {
+		Optional<Employer> maybeUpdated = this.service.update(id, data);
+		if(maybeUpdated.isEmpty()) {
+			throw new NotFoundException(String.format(
+					"Employee with id: %s not found, could not update", 
+					id));
+		}
+		
+		return new ResponseEntity<Employer>(maybeUpdated.get(), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -51,7 +69,7 @@ public class EmployerController {
 		
 		if(!deleted) {
 			throw new NotFoundException(String.format(
-					"Post with id: %s not found, could not delete.", 
+					"Employee with id: %s not found, could not delete.", 
 					id));
 		}
 		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
