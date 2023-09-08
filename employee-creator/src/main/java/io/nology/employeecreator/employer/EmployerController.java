@@ -28,7 +28,10 @@ public class EmployerController {
 
 	@PostMapping
 	public ResponseEntity<Employer> create(@Valid @RequestBody CreateEmployerDTO data){
-		Employer createdEmployer = this.service.create(data);
+		Employer createdEmployer = this.service.create(data);		
+		
+		createdEmployer.add(linkTo(EmployerController.class).slash(createdEmployer.getId()).withSelfRel());
+		
 		return new ResponseEntity<>(createdEmployer, HttpStatus.CREATED);
 		
 	}
@@ -36,6 +39,11 @@ public class EmployerController {
 	@GetMapping
 	public ResponseEntity<List<Employer>> getAll() {
 		List<Employer> allEmployers = this.service.findAll();
+		
+		allEmployers
+			.stream()
+			.forEach(e -> e.add(linkTo(EmployerController.class).slash(e.getId()).withSelfRel()));
+		
 		return new ResponseEntity<>(allEmployers, HttpStatus.OK);
 	}
 	
@@ -65,7 +73,10 @@ public class EmployerController {
 					id));
 		}
 		
-		return new ResponseEntity<Employer>(maybeUpdated.get(), HttpStatus.OK);
+		Employer updatedEmployer = maybeUpdated.get();
+		updatedEmployer.add(linkTo(EmployerController.class).slash(updatedEmployer.getId()).withSelfRel());
+		
+		return new ResponseEntity<Employer>(updatedEmployer, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
