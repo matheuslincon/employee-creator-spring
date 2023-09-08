@@ -1,6 +1,8 @@
 package io.nology.employeecreator.employer;
 
 
+import org.springframework.hateoas.RepresentationModel;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "employees")
-public class Employer {
+public class Employer extends RepresentationModel<Employer> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,13 +41,17 @@ public class EmployerController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Employer> getById(@PathVariable Long id) {
-		Optional<Employer> foundEmployer = this.service.findById(id);
+		Optional<Employer> maybeEmployer = this.service.findById(id);
 		
-		if(foundEmployer.isEmpty()) {
+		if(maybeEmployer.isEmpty()) {
 			throw new NotFoundException(String.format("Employee with id: %s not found", id));
 		}
 		
-		return new ResponseEntity<>(foundEmployer.get(), HttpStatus.OK);
+		Employer foundEmployer = maybeEmployer.get();
+		
+		foundEmployer.add(linkTo(EmployerController.class).slash(foundEmployer.getId()).withSelfRel());
+		
+		return new ResponseEntity<>(foundEmployer, HttpStatus.OK);
 		
 	}
 	
