@@ -35,17 +35,6 @@ public class EmployerService {
 		
 		Optional<Employer> maybeEmployer = repository.findById(id);
 		
-//		employer.ifPresent(employerMaybe -> {
-//			employerMaybe.setFirstname(data.getFirstname());
-//			employerMaybe.setLastname(data.getLastname());
-//			employerMaybe.setEmail(data.getEmail());
-//			employerMaybe.setNumber(data.getNumber());
-//			employerMaybe.setAddress(data.getAddress());
-//			employerMaybe.setIspermanent(data.getIspermanent());
-//			employerMaybe.setStartdate(data.getStartdate());
-//			employerMaybe.setFinishdate(data.getFinishdate());
-//		});
-		
 		if(maybeEmployer.isPresent()) {
 			Employer existingEmployer = maybeEmployer.get();
 			
